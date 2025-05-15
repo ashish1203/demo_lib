@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Library System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #333;
+      color: #fff;
+    }
+    .available {
+      color: green;
+      font-weight: bold;
+    }
+    .not-available {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>📚 Library Book Status</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Book Name</th>
+        <th>Issued To</th>
+        <th>Issued Date</th>
+        <th>Return Date</th>
+        <th>Available</th>
+      </tr>
+    </thead>
+    <tbody id="bookTable">
+      <!-- Books will be loaded here dynamically -->
+    </tbody>
+  </table>
+
+  <script>
+    const books = [
+      {
+        name: "Food Processing Techniques",
+        issuedTo: "Khushboo Sharma",
+        issuedDate: "2025-05-10"
+      },
+      {
+        name: "AI in Agriculture",
+        issuedTo: "",
+        issuedDate: ""
+      },
+      {
+        name: "Food Safety and Standards",
+        issuedTo: "Nikita Kanwar",
+        issuedDate: "2025-05-01"
+      }
+    ];
+
+    function calculateReturnDate(issuedDate) {
+      const date = new Date(issuedDate);
+      date.setDate(date.getDate() + 20);
+      return date.toISOString().split('T')[0];
+    }
+
+    const table = document.getElementById("bookTable");
+
+    books.forEach(book => {
+      const row = document.createElement("tr");
+
+      const issued = book.issuedTo.trim() !== "";
+      const returnDate = issued ? calculateReturnDate(book.issuedDate) : "—";
+      const availability = issued ? `<span class="not-available">No</span>` : `<span class="available">Yes</span>`;
+
+      row.innerHTML = `
+        <td>${book.name}</td>
+        <td>${book.issuedTo || "—"}</td>
+        <td>${book.issuedDate || "—"}</td>
+        <td>${returnDate}</td>
+        <td>${availability}</td>
+      `;
+
+      table.appendChild(row);
+    });
+  </script>
+</body>
+</html>
